@@ -1,0 +1,136 @@
+TASK 1 : Write a blog on Difference between HTTP1.1 vs HTTP2
+
+Difference between HTTP1.1 vs HTTP2
+
+What is HTTP?
+HTTP (Hyper Text Transfer Protocol) is a protocol for fetching resources such as HTML documents. It is the foundation of any data exchange on the Web and it is a client-server protocol, which means requests are initiated by the recipient, usually the Web browser. It is basically the set of rules which describes how the computers are supposed to talk to one another. Here, client is the computer which the users are using, also called the local machine and server is the computer that users are interfacing with.
+All of this communication happens on a request/response model. The client makes a request for the website which he or she wants, usually from their browser and the request gets sent to the server. The server in return first takes the request and responds with the files which are requested.
+During this process the server has to check if the files requested by the client are actually present in the server or not. If they are not present the server responds with appropriate status codes which are defined by the HTTP protocol For E.g., 404 (Page not Found). Status codes are defined in ranges as follows: 
+1. Informational responses (100–199)
+2. Successful responses (200–299)
+3. Redirection messages (300–399)
+4. Client error responses (400–499)
+5. Server error responses (500–599)
+
+HTTP Request:
+All http requests which are made goes through a header. HTTP headers are the code that transfers data between a Web server and a client. You can think of it as a set of first few lines of a http request. An http request header is made up of 3 parts:
+
+
+1.Start Line– GET/background.png HTTP/1.0 (This is the very first line that gets sent)
+2.Headers – User-Agent: Mozilla/5.0   This is additional information that server needs
+3.Body – There’s nothing in the body of the request. It’s what the server uses to send back the files that are requested.
+
+HTTP Response:
+All http responses also have headers. It also has a similar structure like a http request header and is also made of 3 parts:
+
+1.Start Line–HTTP/1.1 404 Not Found (This is the very first line that gets sent)
+2.Headers – Content-Type: Image/Png  
+3.Body – The files or resource that are requested.
+
+Note that not all of the resources are returned to the client in the first call for data. The requests and responses will go back and forth between the server and client until the web browser has received all the resources necessary to render the contents of the HTML page on your screen.
+All of these exchanges and request happens on top of a protocol named the TCP/IP (Transmission Control Protocol and Internet Protocol).
+
+
+
+Evolution of HTTP:
+
+HTTP/0.9 — The One-line Protocol
+
+• Initial version of HTTP — a simple client-server, request-response, telenet-friendly protocol
+• Request nature: single-line (method + path for requested document)
+• Methods supported: GET only
+• Response type: hypertext only
+• Connection nature: terminated immediately after the response
+• No HTTP headers (cannot transfer other content type files), No status/error codes, No URLs, No versioning
+
+HTTP/1.0 — Building extensibility
+
+• Browser-friendly protocol
+• Provided header fields including rich metadata about both request and response (HTTP version number, status code, content type)
+• Response: not limited to hypertext (Content-Type header provided ability to transmit files other than plain HTML files — e.g., scripts, stylesheets, media)
+• Methods supported: GET, HEAD, POST
+• Connection nature: terminated immediately after the response
+
+HTTP 0.9 and HTTP 1.0 were good, but there was a problem. This problem occurred due to the establishment of a new connection for each request. Every time a request is made and sent, a teardown of the connection happens after the request has been sent and a brand-new connection is created to process the next request. Each time a new connection establishes, a TCP three-way handshake should also occur. This made the connection speed and the rendering of the website really slow. To solve this problem the next version of http came up with a solution by reducing the round trips between the client and server.
+
+HTTP/1.1 — The standardized protocol
+
+• This is the HTTP version currently in common use.
+• Introduced critical performance optimizations and feature enhancements — persistent and pipelined connections, chunked transfers, compression/decompression, content negotiations, virtual hosting (a server with a single IP Address hosting multiple domains), faster response and great bandwidth savings by adding cache support.
+• Methods supported: GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS
+• Connection nature: long-lived
+• The Keep-Alive header was used prior to HTTP/1.1 and was obsoleted by HTTP/1.1 making persistent connections the default behaviour. Keep-Alive header can be used to define policies for long-lived communication between hosts (i.e., allows a connection to stay active until an event occurs). This laid foundation for persistence, reusable connections, pipelining, and many more enhanced capabilities in modern web communication protocols.
+• Client, server, or any intermediary can provide information for Keep-Alive header independently. Also, a host can add timeout and max parameters in order to set a timeout or limit maximum request count per connection.
+
+So, in 1999, the w3 overseeing body updated the HTTP spec to version 1.1. This version was a bit of a stopgap, adding features to the 1.0 specification meant to improve the speed and efficiency of web servers powering this new “hypermedia” version of the web.
+
+Http 1.1 performed well over a decade but it also had its limitations. It provided extensions for more than 15 years but even that was not enough. Over the years, web pages became more complex. Some of them were even applications in their own right. More visual media was displayed and the volume and size of scripts adding interactivity also increased. Much more data was transmitted over significantly more HTTP requests and this created more complexity and overhead for HTTP/1.1 connections.
+
+To tackle this problem, Google announced it’s SPDY project whose primary goal was to try to reduce the load latency of web pages by addressing some of the well-known performance limitations of HTTP/1.1. This project was very successful in achieving its goals. Soon after, it slowly got widely adopted and after seeing this response, the IESG reviewed and approved the new HTTP/2 standard for publication in early 2015. The HTTP 2 protocol worked parallelly with SPDY and it acted as the experimental backbone for HTTP 2. SPDY offered a route to test and evaluate each proposal before its inclusion in the HTTP/2 standard which means SPDY had a direct influence on the infrastructure of HTTP2 but at the same time it’s important to note that HTTP 2.0 is extending, not replacing the previous HTTP standard.
+
+So, let’s take a look at what were the improvements in HTTP 2.0:
+1. Binary framing layer:
+2. Streams, messages, and frames
+3. Request and response multiplexing
+4. Stream prioritization
+5. One connection per origin
+6. Flow control
+7. Server push
+8. PUSH_PROMISE 101
+9. Header compression
+10. Security and performance of HPACK
+
+Let’s look at all of them one by one:
+
+1.Binary framing layer:
+
+An extra layer was added over the basic TCP/IP layer of transmission of data of the protocol. This is called the binary framing layer. This was a design optimization for encoding mechanism of HTTP messages. Under this system the HTTP semantics, such as verbs, methods, and headers, are unaffected, but the way they are encoded while in transit is different. Unlike the newline delimited plaintext HTTP/1.x protocol, all HTTP/2 communication is split into smaller messages and frames, each of which is encoded in binary format. This results in better organization of HTTP messages and improved performance
+
+2. Streams, messages, and frames: 
+
+In previous version of http these features were not there. These features were defined in HTTP2.0. Stream is a flow of data within an established connection. It is bidirectional and can carry one or more messages. Message is a complete sequence of frames that are mapped to a logical request or response message. Frame is the smallest unit of communication with a frame header, which identifies the stream to which the frame belongs. To sum up:
+
+i) All communication is done over a single TCP Connection.
+ii) One connection can contain any number of bidirectional streams.
+iii) Streams are the pathway in which all data flows. Each stream has a unique identifier
+iv) All messages are divided into frames and each frame has headers which tells which stream it belongs to.
+v) Frames are encoded in binary form and then mapped to messages that belong to a particular stream
+
+3.Request and Response Multiplexing: 
+
+Multiplexing in this sense means transferring several messages or signals simultaneously on the same channel. HTTP 2.0 allows to send any number of streams within a single TCP Connection. In previous versions this feature was not available and to send each request multiple TCP connections needed to be initiated to which increased the server load. The new binary framing layer in HTTP/2 removes these limitations, and enables full request and response multiplexing, by allowing the client and server to break down an HTTP message into independent frames, interleave them, and then reassemble them on the other end.
+
+4. Stream Prioritization: 
+
+An HTTP message is split into many individual frames and all frames are multiplexed. So, the order in which the frames are interleaved and mapped and delivered at the other end is of paramount importance to serve a good performance. To optimize this process stream prioritization is done. In this process each stream is assigned a particular weight and dependency. The weight ranges between 1 and 256. Higher the weight the more resource allocation is done to that stream compared to other streams. Dependency means that if one stream is dependent on another stream then the parent stream is given more priority over the dependent stream. In this way resource allocation to each stream is optimized which gives better performance while transmission.
+
+5. One connection Per origin:
+
+Most HTTP transfers are short and bursty, whereas TCP is optimized for long- lived, bulk data transfers. By reusing the same connection, HTTP/2 is able to both make more efficient use of each TCP connection, and also significantly reduce the overall protocol overhead. Further, the use of fewer connections reduces the memory and processing footprint along the full connection path (in other words, client, intermediaries, and origin servers).
+
+6. Flow Control:
+
+The underlying mechanism of TCP Flow control in HTTP 1.1 and HTTP 2.0 are identical but due to the multiplexing of streams in HTTP2.0 the standard TCP Flow control of previous versions of http are not granular enough, and does not provide the necessary application-level APIs to regulate the delivery of individual streams. To solve this problem HTTP/2 came up with a system to allow client and servers to adjust their window sizes. Also, every time before the data is sent by the sender, the receiver advertises its flow control window in bytes, which is reduced if the sent data is below that advertised limit and increased if sent data is above that advertised limit. In HTTP/2 Flow control is hop-by-hop, not end-to-end. That is, an intermediary can use it to control resource use and implement resource allocation mechanisms based on own criteria and heuristics.
+
+
+7. Server Push:
+
+Server push actually works on the principle of early anticipation. The server can push additional resources to the client without the client actually requesting the resources ahead of time. The server already knows which resources the client will require. For E.g., when a html document is created, the additional files such as .css and .js files are in-lined in the html document by the creators of the page. Which means they have pushed those files into html document. So, whenever the html document is requested, the .css and .js files are pushed together with it without the client needing to explicitly request those files.
+
+8. PUSH_PROMISE 101:  
+
+PUSH_PROMISE is nothing but a frame which is sent alongside other frames in a stream. Its job is to signal the client that the server is pushing some resources. The PUSH_PROMISE frame sends all the http headers of the promised resources ahead of the actual response data. The server does this to avoid creating duplicate requests for these resources. The streams which are already in cache need not be sent again by the server. So, the PUSH_PROMISE frame helps the client in filtering the resources which are already there in cache from the new stream. The client checks these with the header data which it receives through PUSH_PROMISE frame. This system also helps in reducing the amount of data the server has to send and reduces server load in turn.
+
+9. Header Compression: 
+
+HTTP/2 introduces a form of header compression called HPACK. HPACK allows for very efficient header compression, without being vulnerable to compression related attacks such as CRIME. HPACK provides the following:
+i.  The ability to encode large headers using a fixed Huffman encoding
+ii. The ability to encode commonly used headers as a variable length integer, rather than re-sending the whole header each time
+The advantage of this is that header data which add a huge overhead on top of the data which is being transferred gets reduced and improve performance. HTTP/2 compresses request and response header metadata with HPACK and also adds extra security and a significant improvement in page load time latency.
+
+Summary: 
+HTTP 1.1 and HTTP2.0 have may similarities but HTTP 2.0 have improved the way users interact with the web and modified the infrastructure of pervious versions of http to provide better performance and helped developers in providing a smooth user experience and provide unhindered application usability. It is the technology to go to and as per w3 web technologies survey , as of today HTTP/2 is used by 46.9% of all the websites and all the mordern web servers support HTTP 2.0.. Another thing to note is that HTTP2.0 is built on top of HTTP 1.1 so even if the client does not support HTTP 2 then the client will be served through HTTP 1.1. So if you are looking to increase the speed of your website or if you want to try something new to enhance the performance of your website, then go ahead and try HTTP 2.0.
+
+
+
+
